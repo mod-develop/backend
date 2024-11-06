@@ -1,0 +1,1 @@
+docker run --rm -v %cd%:/app -v %cd%/golangci-lint/.cache/golangci-lint/v1.61.0:/root/.cache -w /app golangci/golangci-lint:v1.61.0 golangci-lint run -c .golangci.yml > ./golangci-lint/report-unformatted.json
