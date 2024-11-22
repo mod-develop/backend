@@ -260,13 +260,20 @@ func (s *Storage) UpdAwaitQuest(ctx context.Context, status *models.QuestPlayerS
 	return status, nil
 }
 
-func (s *Storage) NewMaster(ctx context.Context, master *models.UserMaster) (*models.UserMaster, error) {
-	err := s.db.WithContext(ctx).Create(master).Error
+func (s *Storage) NewMaster(ctx context.Context, user *models.User) (*models.UserMaster, error) {
+	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		err := tx.Save(user).Error
+		if err != nil {
+			return fmt.Errorf("failed create master: %w", err)
+		}
+
+		return nil
+	})
 	if err != nil {
 		return nil, fmt.Errorf("failed create quest master: %w", err)
 	}
 
-	return master, nil
+	return user.QuestMaster, nil
 }
 
 func (s *Storage) GetMasterByCode(ctx context.Context, code string) (*models.UserMaster, error) {

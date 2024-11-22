@@ -32,7 +32,7 @@ type Store interface {
 	GetAwaitQuests(ctx context.Context, userID uint) (*[]models.QuestPlayerStatus, error)
 	GetAwaitQUest(ctx context.Context, awaitID uint) (*models.QuestPlayerStatus, error)
 	UpdAwaitQuest(ctx context.Context, status *models.QuestPlayerStatus) (*models.QuestPlayerStatus, error)
-	NewMaster(ctx context.Context, master *models.UserMaster) (*models.UserMaster, error)
+	NewMaster(ctx context.Context, master *models.User) (*models.UserMaster, error)
 	AddPlayerForMaster(ctx context.Context, masterID, playerID uint) error
 
 	GetPlayerQuests(ctx context.Context, playerID uint) (*[]models.Quest, error)
@@ -385,16 +385,22 @@ func (s *Discipline) ManageQuestConfirmation(ctx context.Context, statusID, user
 }
 
 func (s *Discipline) ManageCreateSelfMaster(ctx context.Context, userID uint) (*models.User, error) {
+	user, err := s.store.GetUserByID(ctx, userID)
+	if err != nil {
+		return nil, fmt.Errorf("failed get user by id: %w", err)
+	}
+	user.Roles = append(user.Roles, models.RoleQuestMasterObject)
 	code := tools.RandomString(lengthMasterCode)
-	master, err := s.store.NewMaster(ctx, &models.UserMaster{
+	user.QuestMaster = &models.UserMaster{
 		UserID:     userID,
 		UniqueCode: code,
-	})
+	}
+	master, err := s.store.NewMaster(ctx, user)
 	if err != nil {
 		return nil, fmt.Errorf("failed create quest master: %w", err)
 	}
 
-	user, err := s.store.GetUserByID(ctx, master.UserID)
+	user, err = s.store.GetUserByID(ctx, master.UserID)
 	if err != nil {
 		return nil, fmt.Errorf("failed get user: %w", err)
 	}

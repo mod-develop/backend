@@ -13,6 +13,18 @@ const (
 	ActionCreateQuest = "create_quest"
 )
 
+var (
+	RoleQuestMasterObject = Role{
+		Model: gorm.Model{
+			ID: 2,
+		},
+		Name: RoleQuestMaster,
+		Actions: []Action{
+			{Model: gorm.Model{ID: 1}},
+		},
+	}
+)
+
 var DefaultRoles = []Role{
 	{
 		Model: gorm.Model{
@@ -21,15 +33,7 @@ var DefaultRoles = []Role{
 		Name:    RoleAdmin,
 		Actions: []Action{},
 	},
-	{
-		Model: gorm.Model{
-			ID: 2,
-		},
-		Name: RoleQuestMaster,
-		Actions: []Action{
-			{Model: gorm.Model{ID: 1}},
-		},
-	},
+	RoleQuestMasterObject,
 }
 
 var DefaultActions = []Action{
