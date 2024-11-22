@@ -33,6 +33,10 @@ func (s *Server) Logger() gin.HandlerFunc {
 func (s *Server) middlewareErrorPage() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Next()
+		if c.Writer.Status() == 401 {
+			_ = s.ui.AuthorizationPage(c.Writer)
+			return
+		}
 		if c.Writer.Status() == 403 {
 			_ = s.ui.Error403Page(c.Writer)
 			return

@@ -16,12 +16,14 @@ type Cookie struct {
 	store cookie.Store
 }
 
+func init() {
+	gob.Register(types.TUser{})
+}
+
 func New(secret []byte) (*Cookie, error) {
 	c := &Cookie{
 		store: cookie.NewStore(secret),
 	}
-
-	gob.Register(types.TUser{})
 
 	return c, nil
 }

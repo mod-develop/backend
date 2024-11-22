@@ -196,7 +196,7 @@ func (s *Server) handlerUserProfile(c *gin.Context) {
 	user, err := s.sess.GetUser(c)
 	if err != nil {
 		s.log.Error("failed get user from session", zap.Error(err))
-		_ = s.ui.Error500Page(c.Writer)
+		c.Writer.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 
@@ -210,14 +210,14 @@ func (s *Server) handlerQuestGiverPage(c *gin.Context) {
 	user, err := s.sess.GetUser(c)
 	if err != nil {
 		s.log.Error("failed get user from session", zap.Error(err))
-		_ = s.ui.Error500Page(c.Writer)
+		c.Writer.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 
 	quests, err := s.disc.GetQuests(c.Request.Context(), user.ID)
 	if err != nil && !errors.Is(err, apperr.ErrDataNotFound) {
-		s.log.Error("failed get user from session", zap.Error(err))
-		_ = s.ui.Error500Page(c.Writer)
+		s.log.Error("failed get quests", zap.Error(err))
+		c.Writer.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
@@ -235,14 +235,14 @@ func (s *Server) handlerQuestEdit(c *gin.Context) {
 	questID, err := strconv.Atoi(sID)
 	if err != nil {
 		s.log.Error("invalid id quest", zap.Error(err))
-		_ = s.ui.Error500Page(c.Writer)
+		c.Writer.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
 	user, err := s.sess.GetUser(c)
 	if err != nil {
 		s.log.Error("failed get user from session", zap.Error(err))
-		_ = s.ui.Error500Page(c.Writer)
+		c.Writer.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
@@ -325,14 +325,14 @@ func (s *Server) handlerQuestNew(c *gin.Context) {
 	user, err := s.sess.GetUser(c)
 	if err != nil {
 		s.log.Error("failed get user from session", zap.Error(err))
-		_ = s.ui.Error500Page(c.Writer)
+		c.Writer.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 
 	players, err := s.disc.GetPlayers(c.Request.Context(), user.Master.ID)
 	if err != nil {
 		s.log.Error("failed get players", zap.Error(err))
-		_ = s.ui.Error500Page(c.Writer)
+		c.Writer.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 	page := &types.TQuestNew{
@@ -401,7 +401,7 @@ func (s *Server) handlerQuestAwait(c *gin.Context) {
 	user, err := s.sess.GetUser(c)
 	if err != nil {
 		s.log.Error("failed get user from session", zap.Error(err))
-		c.Writer.WriteHeader(http.StatusInternalServerError)
+		c.Writer.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 
@@ -424,7 +424,7 @@ func (s *Server) handlerPlayer(c *gin.Context) {
 	user, err := s.sess.GetUser(c)
 	if err != nil {
 		s.log.Error("failed get user from session", zap.Error(err))
-		c.Writer.WriteHeader(http.StatusInternalServerError)
+		c.Writer.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 
@@ -456,7 +456,7 @@ func (s *Server) handlerPlayerQuests(c *gin.Context) {
 	user, err := s.sess.GetUser(c)
 	if err != nil {
 		s.log.Error("failed get user from session", zap.Error(err))
-		c.Writer.WriteHeader(http.StatusInternalServerError)
+		c.Writer.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 
@@ -480,7 +480,7 @@ func (s *Server) handlerPlayerQuest(c *gin.Context) {
 	user, err := s.sess.GetUser(c)
 	if err != nil {
 		s.log.Error("failed get user from session", zap.Error(err))
-		c.Writer.WriteHeader(http.StatusInternalServerError)
+		c.Writer.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 
@@ -488,7 +488,7 @@ func (s *Server) handlerPlayerQuest(c *gin.Context) {
 	questID, err := strconv.Atoi(sID)
 	if err != nil {
 		s.log.Error("invalid id quest", zap.Error(err))
-		_ = s.ui.Error500Page(c.Writer)
+		c.Writer.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
@@ -538,7 +538,7 @@ func (s *Server) handlerPlayerSettings(c *gin.Context) {
 	user, err := s.sess.GetUser(c)
 	if err != nil {
 		s.log.Error("failed get user from session", zap.Error(err))
-		c.Writer.WriteHeader(http.StatusInternalServerError)
+		c.Writer.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 
