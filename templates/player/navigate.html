@@ -1,0 +1,31 @@
+{{ define "navigate" }}
+<div class="position-fixed bottom-0 w-100 pb-1 z-1 bg-white border-top">
+    <div class="row flex-nowrap m-0" style="height: 50px;">
+        <div
+            class="col d-flex flex-column align-items-center justify-content-center">
+            <a href="/player/"
+                class="text-decoration-none d-flex flex-column align-items-center">
+                👶
+                <span class="text-black" style="font-size: 10px;">Профиль</span>
+            </a>
+        </div>
+        <div
+            class="col d-flex flex-column align-items-center justify-content-center">
+            <a href="/player/quests/"
+                class="text-decoration-none d-flex flex-column align-items-center">
+                ⚽️
+                <span class="text-black" style="font-size: 10px;">Квесты</span>
+            </a>
+        </div>
+        <div
+            class="col d-flex flex-column align-items-center justify-content-center">
+            <a href="/player/settings"
+                class="text-decoration-none d-flex flex-column align-items-center">
+                ⚙️
+                <span class="text-black"
+                    style="font-size: 10px;">Настройки</span>
+            </a>
+        </div>
+    </div>
+</div>
+{{ end }}

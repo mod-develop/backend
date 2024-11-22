@@ -1,0 +1,12 @@
+{{ define "content" }}
+<div class="vh-100 d-flex flex-column align-items-center justify-content-center">
+    <span style="font-size: 54px;">500</span>
+    <span class="text-center" style="font-size: 34px;">Server Internal Error</span>
+    <br><a class="btn btn-primary" href="/" id="goback">Назад</a>
+    <br><a href="/" id="goback">На главную</a>
+</div>
+<script>
+    const goback = document.querySelector("#goback")
+    goback.href = document.referrer
+</script>
+{{ end }}

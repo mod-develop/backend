@@ -1,0 +1,53 @@
+{{ define "content"}}
+<h5 class="mb-3">
+    <span>Мои квесты</span>
+</h5>
+{{ range .Quests }}
+<div class="card mb-2"
+    data-id="{{ .ID }}" name="quest" onclick="onClickQuest('{{ .ID }}')">
+    <div class="card-header d-flex flex-row justify-content-between">
+        <h3>
+            {{ if .IsConfirmed }}
+            <span class="text-success">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                    fill="currentColor" class="bi bi-send-check-fill"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 1.59 2.498C8 14 8 13 8 12.5a4.5 4.5 0 0 1 5.026-4.47zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z" />
+                    <path
+                        d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0m-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686" />
+                </svg>
+            </span>
+            {{ else if .IsSended }}
+            <span class="text-warning">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                    fill="currentColor" class="bi bi-send-fill"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z" />
+                </svg>
+            </span>
+            {{ else if .IsRejected }}
+            <span class="text-danger">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send-x-fill" viewBox="0 0 16 16">
+                    <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 1.59 2.498C8 14 8 13 8 12.5a4.5 4.5 0 0 1 5.026-4.47zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z"/>
+                    <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0m-4.854-1.354a.5.5 0 0 0 0 .708l.647.646-.647.646a.5.5 0 0 0 .708.708l.646-.647.646.647a.5.5 0 0 0 .708-.708l-.647-.646.647-.646a.5.5 0 0 0-.708-.708l-.646.647-.646-.647a.5.5 0 0 0-.708 0"/>
+                </svg>
+            </span>
+            {{ end }}
+            {{ .Title }}
+        </h3>
+
+        <span>{{ .Price }} балла(ов)</span>
+    </div>
+    <div class="card-body{{ if .IsConfirmed }} bg-success-subtle{{ else if .IsSended }} bg-warning-subtle{{ else if .IsRejected }} bg-danger-subtle{{ end }}">
+        {{ .Description }}
+    </div>
+</div>
+{{ end }}
+<script>
+    function onClickQuest(id) {
+        document.location.href="/player/quests/"+id
+    }
+</script>
+{{ end }}

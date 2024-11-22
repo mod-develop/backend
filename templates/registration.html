@@ -1,0 +1,51 @@
+{{ define "content" }}
+    <div class="container vh-100" style="width: 300px; margin: auto">
+        <div class="fs-1 center"><span>Регистрация</span></div>
+        <form id="registration" class="form">
+            <div class="mb-3">
+                <label for="login" class="form-label">Логин</label>
+                <input type="text" class="form-control" id="login">
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Пароль</label>
+                <input type="password" class="form-control" id="password">
+            </div>
+            <div class="mb-3">
+                <label for="password2" class="form-label">Повтор пароля</label>
+                <input type="password" class="form-control" id="password2">
+            </div>
+            <input type="submit">
+        </form>
+    </div>
+    <script>
+        document.querySelector("#registration").addEventListener("submit", function(e) {
+            e.preventDefault()
+            password = document.querySelector("#password").value
+            password2 = document.querySelector("#password2").value
+            if (password != password2) {
+                notify("Регистрация", "", "Пароль не совпадает")
+                return
+            }
+
+            fetch("/api/v0/auth/registration", {
+                method: "POST",
+                body: JSON.stringify({
+                    login:  document.querySelector("#login").value,
+                    password: document.querySelector("#password").value
+                })
+            })
+                .then((data) => {
+                    if (data.status == 201) {
+                        document.location.href = "/authorization"
+                    }
+                    return data.json()
+                })
+                .then(json => {
+                    notify("Error", "", json.message)
+                })
+                .catch(err => {
+                    console.error(err)
+                })
+        })
+    </script>
+{{ end }}

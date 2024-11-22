@@ -1,0 +1,56 @@
+{{ define "content"}}
+<div class="mb-2">
+    <a href="/player/quests" class="text-black text-decoration-none">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+            fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+                d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
+        </svg>
+        Назад
+    </a>
+</div>
+{{ if .Error }}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>{{ .Error }}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"
+        aria-label="Close"></button>
+</div>
+{{ end }}
+{{ if .Success }}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>{{ .Success }}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"
+        aria-label="Close"></button>
+</div>
+{{ end }}
+<div class="card mt-3">
+    <div class="card-header d-flex flex-row justify-content-between">
+        <h3>{{ .Quest.Title }}</h3>
+        <span>{{ .Quest.Price }} балла(ов)</span>
+    </div>
+    <div
+        class="card-body
+{{ if .Quest.IsConfirmed }} bg-success-subtle
+{{ else if .Quest.IsRejected }} bg-danger-subtle
+{{ else if .Quest.IsSended }} bg-warning-subtle{{ end }}
+">
+        {{ .Quest.Description }}
+    </div>
+    <div class="card-footer d-flex flex-row justify-content-end">
+        {{ if not .Quest.IsSended }}
+        <form action="/player/quests/{{ .Quest.ID }}" method="POST">
+            <input type="hidden" name="action" value="send">
+            <button class="btn btn-outline-success">Отправить</button>
+        </form>
+        {{ else }}
+        <button class="btn btn-outline-success">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                <path
+                    d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z" />
+            </svg>
+        </button>
+        {{ end }}
+    </div>
+</div>
+{{ end }}

@@ -1,0 +1,98 @@
+{{ define "content" }}
+<h5 class="mb-3">Settings</h5>
+<div class="card mb-3">
+    <div class="card-header">
+        <h5>Мастер квестов</h5>
+    </div>
+    <div class="card-body">
+        {{ if .User.IsQuestMaster }}
+        <span>Ваш код приглашения:</span>
+        <div class="fs-1 d-flex align-items-center justify-content-center">
+            <input class="form-control" style="padding: 10px 20px;" id="master_code" value="{{ .User.Master.Code }}" onclick="copyToClipboard()">
+        </div>
+        {{ else }}
+        <div class="fs-1 d-flex align-items-center justify-content-center">
+            <button class="btn btn-outline-primary" onclick="createQuestMaster()" id="btn_cqm">
+                <span>Стать мастером квестов</span>
+            </button>
+            <div class="spinner-border text-primary" role="status" style="display: none;" id="loader_cqm">
+                <span class="visually-hidden">Loading...</span>
+            </div>            
+        </div>
+        {{ end }}
+    </div>
+</div>
+<div class="card mb-3">
+    <div class="card-header">
+        <h5>Добавить мастера квестов</h5>
+    </div>
+    <div class="card-body d-flex flex-column align-items-center">
+        {{ $length := len .Masters }}
+        {{ if eq 0 $length }}
+        <input type="text" class="form-control mb-1" id="add_master_code">
+        <span class="text-bg-danger" id="add_master_error" style="display: none;">Что то пошло не так</span>
+        <button class="btn btn-primary w-100" onclick="addQuestMaster()">Добавить</button>
+        {{ else  }}
+        <span>Мастер квестов уже добавлен</span>
+        {{ end }}
+    </div>
+</div>
+
+<a href="/logout">Выйти</a>
+<script>
+    function createQuestMaster() {
+        const btn_cqm = document.querySelector("#btn_cqm")
+        const loader_cqm = document.querySelector("#loader_cqm")
+        btn_cqm.style.display = "none"
+        loader_cqm.style.display = "block"
+    
+        fetch("/api/v0/user/settings/self/master", {
+            method: "POST",
+        })
+        .then(d => {
+            if (d.status != 200) {
+                console.log(d)
+            }
+            
+            window.location.href = "/player/settings"
+        })
+        .catch(e => {
+            console.log(e)
+        })
+        .finally(() => {
+            btn_cqm.style.display = "block"
+            loader_cqm.style.display = "none"
+        })
+    }
+
+    function copyToClipboard() {
+        var copyText = document.getElementById("master_code");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); 
+        navigator.clipboard.writeText(copyText.value);
+    }
+
+    function addQuestMaster() {
+        const add_master_error = document.querySelector("#add_master_error")
+        add_master_error.style.display = "none"
+        fetch("/api/v0/user/settings/player/master", {
+            method: "POST",
+            body: JSON.stringify({
+                code: document.querySelector("#add_master_code").value
+            })
+        }).then(d => {
+            if (d.status != 200) {
+                console.log(e)
+                add_master_error.style.display = "block"
+                return
+            }
+            window.location.href = "/player/settings"
+        }).catch(e => {
+            console.log(e)
+                add_master_error.style.display = "block"
+        }).finally(() => {
+            console.log("finish")
+        })
+    }
+</script>
+{{ end }}

@@ -1,0 +1,11 @@
+{{ define "content"}}
+<div class="d-flex flex-column justify-content-center align-items-center">
+    <span class="mt-5" style="font-size: 30px;">Привет!</span>
+    <span style="font-size: 70px;">{{ .User.Login }}</span>
+    <span class="mt-5">Баллы:</span>
+    <div><span style="font-size: 24px;">{{ .Profile.Score }}</span> x<img src="/static/img/medal_gold.png" alt=""></div>
+    {{ if .User.IsQuestMaster }}
+    <a href="/manager/" class="link-primary">Управление</a>
+    {{ end }}
+</div>
+{{ end }}

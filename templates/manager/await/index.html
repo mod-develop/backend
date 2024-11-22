@@ -1,0 +1,150 @@
+{{ define "content" }}
+{{ template "tabs" . }}
+<div>
+    <div class="d-flex flex-row justify-content-between mb-3">
+        <h4>Ожидают подтверждения</h4>
+    </div>
+    {{ range .AwaitQuests }}
+    <div class="card mb-2">
+        <div class="card-header d-flex flex-row justify-content-between">
+            <span>{{ .Title }}</span>
+            <div>
+                <span class="fs-6">{{ .Price }}</span>x
+                <img
+                    src="/static/img/medal_gold.png"
+                    alt
+                    width="24"
+                    height="24"
+                >
+            </div>
+            <span>{{ .PlayerName }}</span>
+        </div>
+        <div class="card-body">
+            {{ .Description }}
+        </div>
+        <div class="card-footer d-flex flex-row justify-content-end align-items-center">
+            <span class="text-bg-danger btn" id="error_{{ .ID }}" role="alert" style="margin-right: 5px; display: none;">
+                Что-то пошло не так
+            </span>
+            <div id="btns_{{ .ID }}">
+                <button
+                    class="btn btn-outline-success"
+                    data-id="{{ .ID }}"
+                    onclick="onConfirm(this)"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-check-circle-fill"
+                        viewBox="0 0 16 16"
+                    >
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                    </svg>
+                    Ок
+                </button>
+                <button class="btn btn-outline-danger" data-id="{{ .ID }}" onclick="onReject(this)">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-x-circle-fill"
+                        viewBox="0 0 16 16"
+                    >
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
+                    </svg>
+                    Вернуть
+                </button>
+            </div>
+            <div class="spinner-border text-light" role="status" style="display: none;" id="loader_{{ .ID }}">
+                <span class="visually-hidden">Загрузка...</span>
+            </div>
+        </div>
+    </div>
+    {{ end }}
+</div>
+<script>
+    function getLoader(id) {
+        return document.querySelector(`#loader_${id}`)
+    }
+
+    function getControlButtons(id) {
+        return document.querySelector(`#btns_${id}`)
+    }
+
+    function getError(id) {
+        return document.querySelector(`#error_${id}`)
+    }
+
+    function onConfirm(e) {
+        const btns = getControlButtons(e.dataset.id)
+        const loader = getLoader(e.dataset.id)
+        const error = getError(e.dataset.id)
+        loader.style.display = 'block'
+        error.style.display = 'none'
+        fetch("/api/v0/manage/quests/status/confirmation", {
+            method: "POST",
+            body: JSON.stringify({
+                id: Number(e.dataset.id),
+                action: "accept"
+            })
+        })
+        .then(d => {
+            if (d.status != 200) {
+                error.style.display = 'block'
+            }
+            return d.json()
+        })
+        .then(j => {
+            if (j.status) {
+                btns.classList.remove("d-flex")
+                btns.style.display = 'none'
+            }
+        })
+        .catch(e => {
+            console.log(e)
+            btns.classList.add("d-flex")
+            error.display = 'block'
+        })
+        .finally(() => {
+            loader.style.display = 'none'
+        })
+    }
+
+    function onReject(e) {
+        const btns = getControlButtons(e.dataset.id)
+        const loader = getLoader(e.dataset.id)
+        const error = getError(e.dataset.id)
+        loader.style.display = 'block'
+        fetch("/api/v0/manage/quests/status/confirmation", {
+            method: "POST",
+            body: JSON.stringify({
+                id: Number(e.dataset.id),
+                action: "reject"
+            })
+        })
+        .then(d => {
+            if (d.status != 200) {
+                error.style.display = 'block'
+            }
+            return d.json()
+        })
+        .then(j => {
+            if (j.status){
+                btns.classList.remove("d-flex")
+                btns.style.display = 'none'
+            }
+        })
+        .catch(e => {
+            console.log(e)
+            btns.classList.add("d-flex")
+            error.display = 'block'
+        })
+        .finally(() => {
+            loader.style.display = 'none'
+        })
+    }
+</script>
+{{ end }}

@@ -1,0 +1,132 @@
+{{ define "content" }}
+<form action="/manager/quests/new" method="post" id="form_new_quest">
+    <h4>
+        Добавить квест
+    </h2>
+    {{ if .Error }}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>{{ .Error }}</strong> 
+        <button type="button" class="btn-close" data-bs-dismiss="alert"
+            aria-label="Close"></button>
+    </div>
+    {{ end }}
+    <div class="mb-3 row">
+        <div class="col-2">
+            <label for="title" class="col-form-label">Название</label>
+        </div>
+        <div class="col-lg">
+            <input
+                type="text"
+                id="title"
+                name="title"
+                class="form-control"
+                value="{{ .Quest.Title }}">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-2">
+            <label for="description" class="col-form-label">Описание</label>
+        </div>
+        <div class="col-lg">
+            <textarea
+                type="text"
+                id="description"
+                name="description"
+                class="form-control">{{ .Quest.Description }}</textarea>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-2">
+            <label for="type" class="col-form-label">Тип квеста</label>
+        </div>
+        <div class="col-lg">
+            <select
+                type="text"
+                id="type"
+                name="type"
+                class="form-control">
+                {{ range .Quest.Types }}
+                <option value="{{ .Value }}" {{ if .Selected }}selected{{ end }}>{{ .Title }}</option>
+                {{ end }}
+            </select>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label for="players" class="form-label">Игроки</label>
+        <div class="form-check">
+            <label for="players_all" class="form-label">Все игроки</label>
+            <input
+                type="checkbox"
+                id="players_all"
+                name="players_all"
+                class="form-check-input"
+                {{ if .Quest.IsAllPlayers }}
+                checked
+                {{ end }}>
+        </div>
+        <select
+            type="text"
+            id="players"
+            name="players"
+            class="form-control"
+            {{ if .Quest.IsAllPlayers }}
+            disabled
+            {{ end }}
+            multiple>
+            {{ range .Quest.Players }}
+            <option value="{{ .ID }}" {{ if .Selected }}selected{{ end }}>
+                {{ .Name }}
+            </option>
+            {{ end }}
+        </select>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-2">
+            <label for="price" class="col-form-label">Награда</label>
+        </div>
+        <div class="col-2">
+            <input
+                type="number"
+                id="price"
+                name="price"
+                class="form-control"
+                value="{{ .Quest.Price }}">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-2">
+            <label for="date_between" class="col-form-label">
+                Дата проведения
+            </label>
+        </div>
+        <div class="col-auto">
+            <div class="row">
+                <div class="col-auto">
+                    <input type="datetime-local" name="date_start" class="form-control"
+                        value="{{ .Quest.DateStart }}">
+                </div>
+                <div class="col-auto">
+                    <input type="datetime-local" name="date_end" class="form-control"
+                        value="{{ .Quest.DateEnd }}">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3 form-check">
+        <label for="active" class="form-check-label">Активировать</label>
+        <input
+            type="checkbox"
+            id="active"
+            name="active"
+            class="form-check-input"
+            {{ if .Quest.IsActive }}checked{{ end }}>
+    </div>
+    <input type="hidden" value="0" name="timezoneoffset">
+    <button class="btn btn-primary">Создать</button>
+</form>
+<script>
+    document.querySelector("#players_all").addEventListener("click", function(e) {
+        document.querySelector("#players").disabled = e.target.checked;
+    })
+</script>
+{{ end }}

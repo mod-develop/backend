@@ -1,0 +1,50 @@
+version: '3'
+
+
+services:
+  api:
+    build:
+      context: .
+    container_name: medal-of-discipline-api
+    restart: always
+    environment:
+      HTTP_ADDRESS: 0.0.0.0:8080
+      SECRET_KEY: secret_key_phrase
+      LOG_LEVEL: debug
+      DATABASE_URI: postgres://root:root@database:5432/discipline?sslmode=disable
+    depends_on:
+      - database
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - back
+
+  database:
+    image: postgres:13.3
+    container_name: medal-of-discipline-db
+    restart: always
+    environment:
+      POSTGRES_DB: discipline
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+    healthcheck:
+      test: pg_isready -U $POSTGRES_USER
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+    volumes:
+      - ./data/pgs-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    expose:
+      - '5432'
+    networks:
+      - back
+
+
+networks:
+  back:
+    external: false

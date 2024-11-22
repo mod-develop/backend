@@ -1,2 +1,7 @@
+.vscode
+
 cert
 **.exe
+data
+
+.env
