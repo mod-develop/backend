@@ -8,14 +8,15 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/playmixer/medal-of-discipline/internal/adapters/api/rest"
-	"github.com/playmixer/medal-of-discipline/internal/adapters/session/cookie"
-	"github.com/playmixer/medal-of-discipline/internal/adapters/storage/database"
-	"github.com/playmixer/medal-of-discipline/internal/adapters/ui/web"
-	"github.com/playmixer/medal-of-discipline/internal/core/config"
-	"github.com/playmixer/medal-of-discipline/internal/core/discipline"
-	"github.com/playmixer/medal-of-discipline/internal/logger"
 	"go.uber.org/zap"
+
+	"github.com/mod-develop/backend/internal/adapters/api/rest"
+	"github.com/mod-develop/backend/internal/adapters/session/cookie"
+	"github.com/mod-develop/backend/internal/adapters/storage/database"
+	"github.com/mod-develop/backend/internal/adapters/ui/web"
+	"github.com/mod-develop/backend/internal/core/config"
+	"github.com/mod-develop/backend/internal/core/discipline"
+	"github.com/mod-develop/backend/internal/logger"
 )
 
 func main() {

@@ -6,9 +6,10 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/playmixer/medal-of-discipline/pkg/tools"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+
+	"github.com/mod-develop/backend/pkg/tools"
 )
 
 type loggerConfigurator struct {

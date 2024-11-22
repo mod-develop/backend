@@ -6,12 +6,13 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/playmixer/medal-of-discipline/internal/adapters/apperr"
-	"github.com/playmixer/medal-of-discipline/internal/adapters/types"
-	"github.com/playmixer/medal-of-discipline/internal/models"
-	"github.com/playmixer/medal-of-discipline/pkg/tools"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
+
+	"github.com/mod-develop/backend/internal/adapters/apperr"
+	"github.com/mod-develop/backend/internal/adapters/types"
+	"github.com/mod-develop/backend/internal/models"
+	"github.com/mod-develop/backend/pkg/tools"
 )
 
 var (

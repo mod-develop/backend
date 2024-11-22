@@ -11,10 +11,11 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/playmixer/medal-of-discipline/internal/adapters/types"
-	"github.com/playmixer/medal-of-discipline/internal/models"
-	"github.com/playmixer/medal-of-discipline/pkg/jwt"
 	"go.uber.org/zap"
+
+	"github.com/mod-develop/backend/internal/adapters/types"
+	"github.com/mod-develop/backend/internal/models"
+	"github.com/mod-develop/backend/pkg/jwt"
 )
 
 var (

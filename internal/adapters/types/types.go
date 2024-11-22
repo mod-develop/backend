@@ -1,6 +1,6 @@
 package types
 
-import "github.com/playmixer/medal-of-discipline/internal/models"
+import "github.com/mod-develop/backend/internal/models"
 
 type TAction struct {
 	IsQuestCreater bool

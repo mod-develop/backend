@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/playmixer/medal-of-discipline/internal/models"
+	"github.com/mod-develop/backend/internal/models"
 )
 
 func (s *Storage) GetPlayerQuests(ctx context.Context, playerID uint) (*[]models.Quest, error) {

@@ -8,10 +8,11 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/playmixer/medal-of-discipline/internal/adapters/apperr"
-	"github.com/playmixer/medal-of-discipline/internal/adapters/types"
-	"github.com/playmixer/medal-of-discipline/internal/models"
 	"go.uber.org/zap"
+
+	"github.com/mod-develop/backend/internal/adapters/apperr"
+	"github.com/mod-develop/backend/internal/adapters/types"
+	"github.com/mod-develop/backend/internal/models"
 )
 
 func (s *Server) handlerRegistrationPage(c *gin.Context) {

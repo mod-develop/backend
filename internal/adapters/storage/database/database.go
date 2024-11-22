@@ -7,11 +7,12 @@ import (
 	"os"
 	"time"
 
-	"github.com/playmixer/medal-of-discipline/internal/models"
 	"go.uber.org/zap"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
+
+	"github.com/mod-develop/backend/internal/models"
 )
 
 type Storage struct {

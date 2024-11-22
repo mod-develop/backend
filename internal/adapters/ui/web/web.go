@@ -5,7 +5,7 @@ import (
 	"html/template"
 	"net/http"
 
-	"github.com/playmixer/medal-of-discipline/internal/adapters/types"
+	"github.com/mod-develop/backend/internal/adapters/types"
 )
 
 type Web struct {

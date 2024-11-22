@@ -7,8 +7,9 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
-	"github.com/playmixer/medal-of-discipline/internal/adapters/types"
-	"github.com/playmixer/medal-of-discipline/internal/models"
+
+	"github.com/mod-develop/backend/internal/adapters/types"
+	"github.com/mod-develop/backend/internal/models"
 )
 
 type Cookie struct {

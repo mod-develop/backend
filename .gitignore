@@ -1,5 +1,6 @@
 .vscode
 
+logs
 cert
 **.exe
 data

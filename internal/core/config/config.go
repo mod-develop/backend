@@ -5,8 +5,9 @@ import (
 
 	"github.com/caarlos0/env/v11"
 	"github.com/joho/godotenv"
-	"github.com/playmixer/medal-of-discipline/internal/adapters/api/rest"
-	"github.com/playmixer/medal-of-discipline/internal/adapters/storage/database"
+
+	"github.com/mod-develop/backend/internal/adapters/api/rest"
+	"github.com/mod-develop/backend/internal/adapters/storage/database"
 )
 
 // Config конфигурация сервиса.
