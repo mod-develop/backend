@@ -288,7 +288,7 @@ func (s *Storage) GetMasterByCode(ctx context.Context, code string) (*models.Use
 func (s *Storage) GetMastersByPlayerID(ctx context.Context, playerID uint) (*[]models.UserMaster, error) {
 	masters := []models.UserMaster{}
 	err := s.db.WithContext(ctx).
-		Joins("join master_players on master_players.user_master_id = user_masters.user_id").
+		Joins("join master_players on master_players.user_master_id = user_masters.id").
 		Where("master_players.user_id = ?", playerID).
 		Find(&masters).Error
 	if err != nil {
