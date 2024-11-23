@@ -37,6 +37,7 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("failed inittialize logger: %w", err)
 	}
+	defer lgr.Sync()
 
 	store, err := database.New(ctx, cfg.Store.DSN)
 	if err != nil {
